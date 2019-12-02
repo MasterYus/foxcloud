@@ -23,7 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if( !$pwd_error && !$usr_error) {
         // Setup database
         $connection = mysqli_connect("localhost", "root", "","foxcloud");
+        //fix charset
+        mysqli_set_charset ($connection , 'utf8');
         // SQL query to check user
+        $password = hash_pasword($password);
         $query = mysqli_query($connection,"select * from users where HASH='$password' AND LOGIN='$username'");
         $rows = mysqli_num_rows($query);
         if ($rows == 1) {
@@ -44,5 +47,11 @@ function secure_input($data) {
     $data = htmlspecialchars($data);
     //$data = mysql_real_escape_string($data);
   return $data;
+}
+
+//hash password
+function hash_pasword($pwd){
+    $pwd = md5($pwd);
+    return $pwd;
 }
 ?>

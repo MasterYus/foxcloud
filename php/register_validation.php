@@ -3,9 +3,11 @@
 //variables to store errors
 $name_empty = $surname_empty = $login_empty = $password_empty = $password_repeat_empty = 0;
 $name_m_err = $surname_m_err = $login_m_err = $password_m_err = $password_repeat_m_err = 0;
+$user_ex_err=0;
 
 //variables to store 5 fields
 $name = $surname = $username = $password = $password_repeat = "";
+$query = 0;
 
 // Define $username and $password
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -61,25 +63,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!($name_empty || $surname_empty || $login_empty || $password_empty || $password_repeat_empty ||
           $name_m_err || $surname_m_err || $login_m_err || $password_m_err || $password_repeat_m_err)) {
         // No errors! Success!
-        /*
         // Setup database
         $connection = mysqli_connect("localhost", "root", "","foxcloud");
+        //fix charset
+        mysqli_set_charset ($connection , 'utf8');
         // SQL query to add user
-        $query = mysqli_query($connection,"select * from users where HASH='$password' AND LOGIN='$username'");
+        $password = hash_pasword($password);
+        //check for duplicates!
+        $query = mysqli_query($connection,"select * from users where LOGIN='$username'");
         $rows = mysqli_num_rows($query);
-        if ($rows == 1) {
-            session_start();
-            $_SESSION['login_user']=$username;
-            header("location: index.php");
+        if ($rows > 0) {
+            // user exists!
+            $user_ex_err = 1;
         } else {
-            $login_error=1;
+            $query = mysqli_query($connection,"insert into users (NAME, S_NAME, LOGIN, HASH, GROUP_ID) values ('$name','$surname','$username','$password','1')");
+            //redirect when successfully registered
+            if($query){
+                //This is success! 
+                //sleep(2);
+                header("location: login.php");
+            }
         }
-        mysqli_close($connection); // Closing Connection
-         *
-         */
-        echo "Успех!";
     }
-}
+}     
 
 // Secure from injections
 function secure_input($data) {
@@ -88,6 +94,12 @@ function secure_input($data) {
     $data = htmlspecialchars($data);
     //$data = mysqli_real_escape_string($data);
   return $data;
+}
+
+//hash password
+function hash_pasword($pwd){
+    $pwd = md5($pwd);
+    return $pwd;
 }
 
 ?>

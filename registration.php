@@ -10,7 +10,7 @@
     <title>Foxcloud Registration</title>
 	<meta name="description" content="Делись музыкой!">
     <link href="css/main.css" rel="stylesheet">
-    <link href="css/modern-business.css" rel="stylesheet">
+    <link href="css/extra.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -56,7 +56,7 @@
                         <a href="login.php"><strong>Войти</strong></a>
                     </li>
                      <li>
-                         <a href="login.php"><u>Регистрация</u></a>
+                         <a href="registration.php"><u>Регистрация</u></a>
                     </li>
                 </ul>
             </div>
@@ -107,6 +107,7 @@
                             <input type="text" class="form-control" name="login" value="<?php echo $username?>" placeholder="Логин" required>
                            <?php if($login_empty) { display_alert("Пожалуйста введите логин."," • "); }?>
                            <?php if($login_m_err) { display_alert("Можно использовать только английские буквы и цифры."," • "); }?>
+                           <?php if($user_ex_err) { display_alert("Пользователь с таким логином уже зарегистрирован!"," • "); }?>
                         </div>
                     </div>
                     <div class="control-group form-group">
@@ -126,11 +127,11 @@
                         </div>
                     </div>
                     <div id="success">
+                        <?php //if ($query)  display_msg("Регистрация завершена!", '<i class="fa fa-fw fa-check-circle"></i>');  ?> 
                     </div>
                     <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
                 </form>
             </div>
-
         </div>
         <!-- /.row -->
 
@@ -149,7 +150,7 @@
 
     <!-- Design JS -->
     <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/minimize.js"></script>
     
 </body>
 

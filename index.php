@@ -6,7 +6,7 @@
     <title>Foxcloud Beta</title>
 	<meta name="description" content="Делись музыкой!">
     <link href="css/main.css" rel="stylesheet">
-    <link href="css/modern-business.css" rel="stylesheet">
+    <link href="css/extra.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -180,7 +180,7 @@
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/minimize.js"></script>
 
     <!-- Script to Activate the Carousel -->
     <script>
