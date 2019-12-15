@@ -8,7 +8,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foxcloud Beta</title>
-	<meta name="description" content="Делись музыкой!">
+    <link href="img/foxcloud.ico" rel="icon" type="image/png" />
+    <meta name="description" content="Делись музыкой!">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/extra.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -125,7 +126,7 @@
 
     <!-- Design JS -->
     <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/minimize.js"></script>
     
 </body>
 

@@ -1,10 +1,18 @@
+<?php session_start();
+if (isset($_GET["session_clear"])) { 
+    session_destroy();
+    unset($_GET["session_clear"]);
+    header("Refresh:0; url=?");
+}
+?>
 <!doctype html>
 <html lang="en" class="no-js">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foxcloud Beta</title>
-	<meta name="description" content="Делись музыкой!">
+    <link href="img/foxcloud.ico" rel="icon" type="image/png" />
+    <meta name="description" content="Делись музыкой!">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/extra.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -31,32 +39,29 @@
                     <li>
                         <a href="services.html">Services</a>
                     </li>
+                    <?php if (isset($_SESSION["user_login"])) { 
+                    echo <<<EOF
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Pages <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>{$_SESSION['user_name']} {$_SESSION['user_surname']}</strong><b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="full-width.html">Full Width Page</a>
+                                <a href="profile.php">Профиль</a>
                             </li>
                             <li>
-                                <a href="sidebar.html">Sidebar Page</a>
-                            </li>
-                            <li>
-                                <a href="faq.html">FAQ</a>
-                            </li>
-                            <li>
-                                <a href="404.html">404</a>
-                            </li>
-                            <li>
-                                <a href="pricing.html">Pricing Table</a>
+                                <a href="?session_clear">Выйти</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> 
+                    EOF; 
+                    } else {
+                    echo <<<EOF
                     <li>
                         <a href="login.php"><strong>Войти</strong></a>
                     </li>
                      <li>
                         <a href="registration.php"><u>Регистрация</u></a>
                     </li>
+                    EOF;} ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

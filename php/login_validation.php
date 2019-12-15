@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 $usr_error = $pwd_error =$login_error= 0; 
 $username = $password = "";
 
@@ -29,9 +29,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = hash_pasword($password);
         $query = mysqli_query($connection,"select * from users where HASH='$password' AND LOGIN='$username'");
         $rows = mysqli_num_rows($query);
-        if ($rows == 1) {
+        $data = mysqli_fetch_assoc($query);
+        if ($rows == 1) {\
+            session_destroy();
+            session_id($data["ID"]);
             session_start();
-            $_SESSION['login_user']=$username;
+            $_SESSION['user_login']=$data['LOGIN'];
+            $_SESSION['user_name']=$data['NAME'];
+            $_SESSION['user_surname']=$data['S_NAME'];
+            $_SESSION['user_group_id']=$data['GROUP_ID'];
+            echo session_id(). $_SESSION['user_name'];
             header("location: index.php");
         } else {
             $login_error=1;

@@ -6548,3 +6548,15 @@ button.close {
 .visible-lg-inline-block {
   display: none !important;
 }
+
+.div-center{
+    display: flex;
+    align-items: center;
+}
+
+.div-center-self{
+    display: flex;
+    justify-content: center;
+}
+
+
