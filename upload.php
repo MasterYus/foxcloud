@@ -1,11 +1,5 @@
 <?php
-/*
-PekeUpload
-Copyright (c) 2013 Pedro Molina
-*/
-
-// Define a destination
-$targetFolder = 'storage/audio/'; // Relative to the root
+$targetFolder = 'storage/audio/';
 
 
 if (!empty($_FILES)) {

@@ -23,23 +23,6 @@ if (isset($_GET["session_clear"])) {
     <link href="css/main.css" rel="stylesheet">
     <link href="css/extra.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <style type="text/css">
-    body {
-            font: 13px Arial, Helvetica, Sans-serif;
-    }
-    .uploadifive-button {
-            float: left;
-            margin-right: 10px;
-    }
-    #queue {
-            border: 1px solid #E5E5E5;
-            height: 177px;
-            overflow: auto;
-            margin-bottom: 10px;
-            padding: 0 3px 3px;
-            width: 300px;
-    }
-    </style>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
@@ -122,24 +105,86 @@ if (isset($_GET["session_clear"])) {
             <div class="controls text-center">  
                 <p style="font-size:15px">Загрузите свою музыку!<br>Файл должен быть не более 15 Мб в формате .mp3</p>
                 <hr>
-                <form>
-                    <input id="file" class="btn btn-default" name="file" type="file" multiple="false"/>
-                </form>
+                <form name="sentMessage" id="file_form" novalidate method="post" action="">
+                    <div id="form_holder" style="display: none">
+                        <input id="file" class="btn btn-default" name="file" type="file" multiple="false"/>
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label>Название:</label>
+                                <input type="text" class="form-control" name="song_name" value="" placeholder="Название композиции" required>
+                                 <p class="has-error" id="name_error"></p>
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label>Альбом:</label>
+                                <input type="text" class="form-control" name="song_album" value="" placeholder="Название альбома" required>
+                                 <p class="has-error" id="album_error"></p>
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label>Описание:</label>
+                                <input type="text" class="form-control" name="song_description" value="" placeholder="Описание" required>
+                                 <p class="has-error" id="description_error"></p>
+                            </div>
+                        </div>
+                    </div> 
+                    <p id="errors"></p>
+                    <button type="button" id="load_btn_show" class="btn btn-primary">+ Добавить трек!</button>
+                 </form>     
                 <script type="text/javascript">
-                    $( document ).ready(function() {
-                     $('#file').pekeUpload({
-                        'btnText': "Загрузить файл",
-                        'dragMode': false,
-                        'allowedExtensions': "mp3",
-                        'maxSize': 0,
-                        'showPreview': false,
-                        'sizeError': "Файл слишком большой (> 15Мб)",
-                        'errorOnResponse': "Ошибка загрузки файла",
-                        'delfiletext': "Отменить",
-                        'limit': 1,
-                        'invalidExtError': "Недопустимый тип файла",
+                    //some Jquery visual stuff
+                    $(document).ready(function() {
+                        $('#file').pekeUpload({
+                           'btnText': "Загрузить .mp3 файл",
+                           'dragMode': false,
+                           'allowedExtensions': "mp3",
+                           'maxSize': 15728640,
+                           'showPreview': false,
+                           'sizeError': "Файл слишком большой (> 15Мб)",
+                           'errorOnResponse': "Ошибка загрузки файла",
+                           'delfiletext': "Отменить",
+                           'limit': 1,
+                           'invalidExtError': "Недопустимый тип файла",
+                           'onSubmit': false
+                        });
                      });
-                     });
+                    $("#load_btn_show").on("click",function(e) { 
+                        if (this.id == "load_btn_show"){
+                            e.preventDefault();
+                            this.id = "load_btn";
+                            $('#load_btn_show').text("Загрузить трек!");
+                            $('#form_holder').show("slow","swing");
+                            e.stopPropagation();
+                        }
+                    });
+                    $(document).on("click","#load_btn",function(e) {
+                        e.preventDefault();
+                        //ajax form validation
+                        $.ajax({
+                            type: 'post',
+                            url: 'php/load_validation.php',
+                            dataType: 'html',
+                            data:$("#file_form").serialize(),
+                            success: function (html) {
+                                var result = jQuery.parseJSON(html);
+                                if(result.success){
+                                    $("#file_form").html('<p style="font-size:20px" class="has-success"><i class="fa fa-fw fa-check-circle"></i>Трек загружен!</p>');
+                                    setTimeout(function(){
+                                        //location.reload();
+                                    }, 2000);
+                                }else{
+                                    $("#name_error").text(result.song_name);
+                                    $("#album_error").text(result.song_album);
+                                    $("#description_error").text(result.song_description);
+                                }
+                            }
+                        });
+                    });
+                    
+                   
+                    
                 </script>
             </div>
         </div>
@@ -151,9 +196,9 @@ if (isset($_GET["session_clear"])) {
                 </p>
             </div>
             <div class="col-xs-6">
-                <h3>
+                <h4>
                     <a href="blog-post.html">Title</a>
-                </h3>
+                </h4>
                 <p>by <a href="#">Author link</a></p>
                 <p>Description</p>
                 <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-comment"></i></a>             
@@ -167,9 +212,9 @@ if (isset($_GET["session_clear"])) {
         <!-- Pager -->
         <div class="row">
             <ul class="pager">
-                <li class="previous"><a href="#">&larr; Older</a>
+                <li class="previous"><a href="#">&larr;</a>
                 </li>
-                <li class="next"><a href="#">Newer &rarr;</a>
+                <li class="next"><a href="#">&rarr;</a>
                 </li>
             </ul>
         </div>

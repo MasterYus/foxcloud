@@ -6559,4 +6559,7 @@ button.close {
     justify-content: center;
 }
 
+.hidden{
+    display: none;
+}
 

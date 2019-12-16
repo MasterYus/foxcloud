@@ -297,6 +297,7 @@
                         if (data == 1 || data.success == 1) {
                             pekeUpload.files[pos] = null;
                             $('div.row[rel="' + pos + '"]').find(".pkuppbr").css("width", "100%");
+                            console.log('ajax success');
                             options.onFileSuccess(file, data);
                         } else {
                             pekeUpload.files.splice(pos, 1);
@@ -334,6 +335,7 @@
                     },
                     complete: function() {
                         if (options.onSubmit) {
+                            console.log('on complete');
                             pekeUpload.uploadedfiles++;
                             if (pekeUpload.uploadedfiles == pekeUpload.files.length && pekeUpload.hasErrors == false) {
                                 pekeUpload.obj.remove();
