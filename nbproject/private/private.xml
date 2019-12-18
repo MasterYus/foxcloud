@@ -3,12 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/xampp/htdocs/FOXCLOUD/php/login_validation.php</file>
-            <file>file:/E:/xampp/htdocs/FOXCLOUD/php/load_validation.php</file>
-            <file>file:/E:/xampp/htdocs/FOXCLOUD/upload.php</file>
-            <file>file:/E:/xampp/htdocs/FOXCLOUD/php/fox_ui_lib.php</file>
-            <file>file:/E:/xampp/htdocs/FOXCLOUD/js/jquery.js</file>
-            <file>file:/E:/xampp/htdocs/FOXCLOUD/profile.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/css/main.css</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/upload.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/php/fox_ui_lib.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/profile.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/css/extra.css</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/registration.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/login.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/php/load_validation.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/index.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/pricing.html</file>
         </group>
     </open-files>
 </project-private>

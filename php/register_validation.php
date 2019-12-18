@@ -81,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if($query){
                 //This is success! 
                 //sleep(2);
+                mysqli_close($connection);
                 header("location: login.php");
             }
         }

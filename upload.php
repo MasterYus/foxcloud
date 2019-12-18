@@ -1,5 +1,5 @@
 <?php
-$targetFolder = 'storage/audio/';
+$targetFolder = 'storage/tmp/';
 
 
 if (!empty($_FILES)) {

@@ -9,6 +9,11 @@ if (isset($_GET["session_clear"])) {
     header("location: index.php");
     exit();
 }
+
+// Setup database
+$connection = mysqli_connect("localhost", "root", "","foxcloud");
+//fix charset
+mysqli_set_charset ($connection , 'utf8');
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -107,7 +112,10 @@ if (isset($_GET["session_clear"])) {
                 <hr>
                 <form name="sentMessage" id="file_form" novalidate method="post" action="">
                     <div id="form_holder" style="display: none">
-                        <input id="file" class="btn btn-default" name="file" type="file" multiple="false"/>
+                        <div class="control-group" id="file_holder">
+                            <input id="file" class="btn btn-default" name="file" type="file" multiple="false"/>
+                        </div>
+                        <p class="has-error" id="file_error"></p>
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Название:</label>
@@ -135,6 +143,7 @@ if (isset($_GET["session_clear"])) {
                  </form>     
                 <script type="text/javascript">
                     //some Jquery visual stuff
+                    var file_uploaded = false;
                     $(document).ready(function() {
                         $('#file').pekeUpload({
                            'btnText': "Загрузить .mp3 файл",
@@ -147,15 +156,20 @@ if (isset($_GET["session_clear"])) {
                            'delfiletext': "Отменить",
                            'limit': 1,
                            'invalidExtError': "Недопустимый тип файла",
-                           'onSubmit': false
+                           'onSubmit': false,
+                           'onFileSuccess': function(file,data){
+                               alert(file.name + " загружен!");
+                               file_uploaded = file.name;
+                               $("#file_holder").html('<button type="button" class="btn btn-default" style=""><i class="fa fa-fw fa-check-circle"></i>'+ file.name +' загружен!</p>');
+                           }
                         });
                      });
                     $("#load_btn_show").on("click",function(e) { 
                         if (this.id == "load_btn_show"){
                             e.preventDefault();
-                            this.id = "load_btn";
                             $('#load_btn_show').text("Загрузить трек!");
                             $('#form_holder').show("slow","swing");
+                            this.id = "load_btn";
                             e.stopPropagation();
                         }
                     });
@@ -166,15 +180,16 @@ if (isset($_GET["session_clear"])) {
                             type: 'post',
                             url: 'php/load_validation.php',
                             dataType: 'html',
-                            data:$("#file_form").serialize(),
+                            data:$("#file_form").serialize()+"&file_uploaded="+file_uploaded, //add extra file data to the form
                             success: function (html) {
                                 var result = jQuery.parseJSON(html);
                                 if(result.success){
                                     $("#file_form").html('<p style="font-size:20px" class="has-success"><i class="fa fa-fw fa-check-circle"></i>Трек загружен!</p>');
                                     setTimeout(function(){
-                                        //location.reload();
+                                        location.reload();
                                     }, 2000);
                                 }else{
+                                    $("#file_error").text(result.file_upload);
                                     $("#name_error").text(result.song_name);
                                     $("#album_error").text(result.song_album);
                                     $("#description_error").text(result.song_description);
@@ -182,33 +197,44 @@ if (isset($_GET["session_clear"])) {
                             }
                         });
                     });
-                    
-                   
-                    
                 </script>
             </div>
         </div>
         <hr>
-        <!-- Blog Post Row -->
+        
+        <!-- File Row -->
+        <?php
+        $query = mysqli_query($connection,"select * from audio where FILE_ARTIST='".session_id()."'");
+        if(mysqli_num_rows($query)==0){
+            echo <<<EOF
+            <div class="row div-center div-center-self text-center">
+            <img style="width:300px; height: auto;" src="img/empty.jpg"/>
+            </div>
+            <div class="row div-center div-center-self text-center">
+            <p style="font-size:15px">Здесь пока ничего нет :(<br>Загрузите свой первый трек!</p>
+            </div>
+            EOF;
+        }
+        while($data = mysqli_fetch_assoc($query)){
+        echo <<<EOF
         <div class="row div-center">
             <div class="col-xs-1 text-center">
-                <p><i class="fa fa-file-audio-o fa-4x"></i>
-                </p>
+                <p><i class="fa fa-file-audio-o fa-4x"></i></p>
             </div>
             <div class="col-xs-6">
                 <h4>
-                    <a href="blog-post.html">Title</a>
+                    <a>{$data['FILE_NAME']}</a>
                 </h4>
-                <p>by <a href="#">Author link</a></p>
-                <p>Description</p>
+                <p>by <a href="#">{$_SESSION['user_login']} ({$_SESSION['user_name']} {$_SESSION['user_surname']})</a></p>
+                <p>{$data['FILE_DESC']}</p>
                 <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-comment"></i></a>             
             </div>
-            <div class="col-xs-3 "><audio id="sound" controls controlsList="nodownload"><source src="storage/audio/boulevard_metal.mp3" type="audio/mp3" ></audio></div>
+            <div class="col-xs-3 "><audio id="sound" controls controlsList="nodownload"><source src="storage/audio/{$data['ID']}.mp3" type="audio/mp3" ></audio></div>
         </div>
-        <!-- /.row -->
-
         <hr>
-
+        EOF;
+        }?>
+<!-- /.row -->
         <!-- Pager -->
         <div class="row">
             <ul class="pager">
