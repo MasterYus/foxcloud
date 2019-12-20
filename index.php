@@ -1,9 +1,17 @@
 <?php session_start();
+
+include 'php/fox_ui_lib.php';
+
 if (isset($_GET["session_clear"])) { 
     session_destroy();
     unset($_GET["session_clear"]);
     header("Refresh:0; url=?");
 }
+
+// Setup database
+$connection = mysqli_connect("localhost", "root", "","foxcloud");
+//fix charset
+mysqli_set_charset ($connection , 'utf8');
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -34,34 +42,9 @@ if (isset($_GET["session_clear"])) {
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="about.html">О сервисе</a>
+                        <a href="index.php#about">О сервисе</a>
                     </li>
-                    <li>
-                        <a href="services.html">Services</a>
-                    </li>
-                    <?php if (isset($_SESSION["user_login"])) { 
-                    echo <<<EOF
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>{$_SESSION['user_name']} {$_SESSION['user_surname']}</strong><b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="profile.php">Профиль</a>
-                            </li>
-                            <li>
-                                <a href="?session_clear">Выйти</a>
-                            </li>
-                        </ul>
-                    </li> 
-                    EOF; 
-                    } else {
-                    echo <<<EOF
-                    <li>
-                        <a href="login.php"><strong>Войти</strong></a>
-                    </li>
-                     <li>
-                        <a href="registration.php"><u>Регистрация</u></a>
-                    </li>
-                    EOF;} ?>
+                    <?php show_user_footer(); ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -142,27 +125,40 @@ if (isset($_GET["session_clear"])) {
                 </div>
             </div>
         </div>
-        <!-- / -->
-        <!-- Features Section -->
+        
+        <?php if (isset($_SESSION['user_login'])){
+        echo <<<EOF
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header">Modern Business Features</h2>
+               <h2 class="page-header">Недавно загруженное</h2>
+            </div>
+        EOF;
+        show_file_row("all");
+        echo "</div>";
+        }?>
+        
+        <!-- / -->
+        <!-- Features Section --> 
+        <a name="about"/>
+        <div class="row">
+            <div class="col-lg-12">
+               <h2 class="page-header">О Foxcloud</h2>
             </div>
             <div class="col-md-6">
-                <p>The Modern Business template by Start Bootstrap includes:</p>
+                <p>Интерактивная клиент-серверная система Foxcloud это:</p>
                 <ul>
-                    <li><strong>Bootstrap v3.3.7</strong>
-                    </li>
+                    <li><strong>Курсовая работа :)</strong></li>
+                    <li>PHP v7.0</li>
+                    <li>HTML5</li>
                     <li>jQuery v1.11.1</li>
-                    <li>Font Awesome v4.2.0</li>
-                    <li>Working PHP contact form with validation</li>
-                    <li>Unstyled page elements for easy customization</li>
-                    <li>17 HTML pages</li>
+                    <li>Система авторизации и регистрации на PHP</li>
+                    <li>PHP сессии и комбинированный динамический профиль пользователя</li>
+                    <li>2 группы пользователей</li>
+                    <li>Защита от SQL инъекций, серверная валидация полей, md5 хэширование паролей</li>
                 </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia dolorum ducimus unde.</p>
             </div>
             <div class="col-md-6">
-                <img class="img-responsive" src="https://placehold.it/700x450" alt="">
+                <img draggable="false" style="width:400px; height: auto;" src="img/about.png"/>
             </div>
         </div>
         <!-- / -->

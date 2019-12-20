@@ -7,12 +7,14 @@
             <file>file:/C:/xampp/htdocs/foxcloud/upload.php</file>
             <file>file:/C:/xampp/htdocs/foxcloud/php/fox_ui_lib.php</file>
             <file>file:/C:/xampp/htdocs/foxcloud/profile.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/console.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/php/console_manager.php</file>
             <file>file:/C:/xampp/htdocs/foxcloud/css/extra.css</file>
             <file>file:/C:/xampp/htdocs/foxcloud/registration.php</file>
             <file>file:/C:/xampp/htdocs/foxcloud/login.php</file>
             <file>file:/C:/xampp/htdocs/foxcloud/php/load_validation.php</file>
+            <file>file:/C:/xampp/htdocs/foxcloud/php/login_validation.php</file>
             <file>file:/C:/xampp/htdocs/foxcloud/index.php</file>
-            <file>file:/C:/xampp/htdocs/foxcloud/pricing.html</file>
         </group>
     </open-files>
 </project-private>

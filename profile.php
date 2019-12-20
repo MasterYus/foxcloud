@@ -1,7 +1,11 @@
 <?php session_start();
 
+include 'php/fox_ui_lib.php';
+
 if(!isset($_SESSION["user_login"])){
      header("location: login.php");
+} elseif ($_SESSION["user_group_id"]!="1") {
+    header("location: console.php");
 }
 if (isset($_GET["session_clear"])) { 
     session_destroy();
@@ -9,11 +13,6 @@ if (isset($_GET["session_clear"])) {
     header("location: index.php");
     exit();
 }
-
-// Setup database
-$connection = mysqli_connect("localhost", "root", "","foxcloud");
-//fix charset
-mysqli_set_charset ($connection , 'utf8');
 ?>
 <!doctype html>
 <html lang="en" class="no-js">
@@ -22,8 +21,8 @@ mysqli_set_charset ($connection , 'utf8');
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://html5-templates.com/" />
-    <title>Bootstrap Template</title>
-    <meta name="description" content="A minimalist Bootstrap theme by StartBootstrap. Contains everything you need to get started building your website. All you have to do is change the text and images.">
+    <title>Foxcloud Profile</title>
+    <meta name="description" content="My profile">
     <link href="img/foxcloud.ico" rel="icon" type="image/png" />
     <link href="css/main.css" rel="stylesheet">
     <link href="css/extra.css" rel="stylesheet">
@@ -55,34 +54,9 @@ mysqli_set_charset ($connection , 'utf8');
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="about.html">О сервисе</a>
+                         <a href="index.php#about">О сервисе</a>
                     </li>
-                    <li>
-                        <a href="services.html">Services</a>
-                    </li>
-                    <?php if (isset($_SESSION["user_login"])) { 
-                    echo <<<EOF
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>{$_SESSION['user_name']} {$_SESSION['user_surname']}</strong><b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="profile.php">Профиль</a>
-                            </li>
-                            <li>
-                                <a href="?session_clear">Выйти</a>
-                            </li>
-                        </ul>
-                    </li> 
-                    EOF; 
-                    } else {
-                    echo <<<EOF
-                    <li>
-                        <a href="login.php"><strong>Войти</strong></a>
-                    </li>
-                     <li>
-                        <a href="registration.php"><u>Регистрация</u></a>
-                    </li>
-                    EOF;} ?>
+                    <?php show_user_footer(); ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -203,38 +177,8 @@ mysqli_set_charset ($connection , 'utf8');
         <hr>
         
         <!-- File Row -->
-        <?php
-        $query = mysqli_query($connection,"select * from audio where FILE_ARTIST='".session_id()."'");
-        if(mysqli_num_rows($query)==0){
-            echo <<<EOF
-            <div class="row div-center div-center-self text-center">
-            <img style="width:300px; height: auto;" src="img/empty.jpg"/>
-            </div>
-            <div class="row div-center div-center-self text-center">
-            <p style="font-size:15px">Здесь пока ничего нет :(<br>Загрузите свой первый трек!</p>
-            </div>
-            EOF;
-        }
-        while($data = mysqli_fetch_assoc($query)){
-        echo <<<EOF
-        <div class="row div-center">
-            <div class="col-xs-1 text-center">
-                <p><i class="fa fa-file-audio-o fa-4x"></i></p>
-            </div>
-            <div class="col-xs-6">
-                <h4>
-                    <a>{$data['FILE_NAME']}</a>
-                </h4>
-                <p>by <a href="#">{$_SESSION['user_login']} ({$_SESSION['user_name']} {$_SESSION['user_surname']})</a></p>
-                <p>{$data['FILE_DESC']}</p>
-                <a class="btn btn-primary" href="blog-post.html">Read More <i class="fa fa-comment"></i></a>             
-            </div>
-            <div class="col-xs-3 "><audio id="sound" controls controlsList="nodownload"><source src="storage/audio/{$data['ID']}.mp3" type="audio/mp3" ></audio></div>
-        </div>
-        <hr>
-        EOF;
-        }?>
-<!-- /.row -->
+        <?php show_file_row("user");?>
+        <!-- /.row -->
         <!-- Pager -->
         <div class="row">
             <ul class="pager">
@@ -252,7 +196,7 @@ mysqli_set_charset ($connection , 'utf8');
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website, year</p>
+                    <p>Copyright &copy; YUS web technologies, 2019</p>
                 </div>
             </div>
         </footer>
